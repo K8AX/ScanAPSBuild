@@ -53,7 +53,7 @@ public:
                           ->setFormat(oboe::AudioFormat::I16)
                           ->setSampleRate(mSampleRate)
                           ->setChannelCount(2)
-                          ->setCallback(this)
+                          ->setCallback(this);
         auto result = builder.openStream(mStream);
         if (result != oboe::Result::OK) {
             LOG_CRITICAL(Audio_Sink, "Error creating playback stream: {}",
