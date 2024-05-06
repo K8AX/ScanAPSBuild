@@ -445,9 +445,7 @@ class EmulationFragment : Fragment(), SurfaceHolder.Callback, Choreographer.Fram
     override fun onPause() {
         if (NativeLibrary.isRunning()) {
             if (!binding.drawerLayout.isOpen) {
-                Handler(Looper.getMainLooper()).postDelayed({
-                        binding.drawerLayout.open()
-                }, 500) // 500 milliseconds delay
+                binding.drawerLayout.open()
             }
         }
         Choreographer.getInstance().removeFrameCallback(this)
