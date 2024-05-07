@@ -452,6 +452,9 @@ class EmulationFragment : Fragment(), SurfaceHolder.Callback, Choreographer.Fram
         Choreographer.getInstance().postFrameCallback(this)
 
         IsFragmentResumed = true
+        if (binding.drawerLayout.isOpen) {
+            NativeLibrary.pauseEmulation()
+        }
     }
 
     override fun onPause() {
