@@ -126,6 +126,37 @@
                 android:contentDescription="@string/cheats"
                 android:text="@string/cheats" />
 
+           <TextView
+             android:id="@+id/manage_shader_cache"
+             style="?attr/textAppearanceLabelLarge"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="8dp"
+             android:text="@string/manage_shader_cache"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toBottomOf="@+id/layout_horizontal_saves" />
+
+          <LinearLayout
+            android:id="@+id/layout_horizontal_shader_caches"
+            style="@style/ThemeOverlay.Material3.Button.IconButton.Filled.Tonal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="start|center"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/manage_shader_cache">
+
+          <com.google.android.material.button.MaterialButton
+              android:id="@+id/cheats"
+              style="@style/Widget.Material3.Button.TonalButton.Icon"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:contentDescription="@string/clear_shader_cache"
+              android:text="@string/clear_shader_cache" />
+
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
