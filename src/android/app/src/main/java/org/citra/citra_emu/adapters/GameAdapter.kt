@@ -38,6 +38,8 @@ import org.citra.citra_emu.utils.GameIconUtils
 import org.citra.citra_emu.viewmodel.GamesViewModel
 import org.citra.citra_emu.features.settings.ui.SettingsActivity
 import org.citra.citra_emu.features.settings.utils.SettingsFile
+import org.citra.citra_emu.utils.PermissionsHandler
+import org.citra.citra_emu.utils.FileUtil
 
 class GameAdapter(private val activity: AppCompatActivity, private val inflater: LayoutInflater) :
     ListAdapter<Game, GameViewHolder>(AsyncDifferConfig.Builder(DiffCallback()).build()),
@@ -217,6 +219,11 @@ class GameAdapter(private val activity: AppCompatActivity, private val inflater:
             val action = CheatsFragmentDirections.actionGlobalCheatsFragment(holder.game.titleId)
             view.findNavController().navigate(action)
             bottomSheetDialog.dismiss()
+        }
+
+        bottomSheetView.findViewById<MaterialButton>(R.id.clear_shader_cache).setOnClickListener {
+            val CitraShaderCachePath = PermissionsHandler.citraDirectory + "/shaders/opengl/precompiled/conventional/" + holder.game.titleId.toString() + ".bin" 
+            FileUtil.deleteDocument(CitraShaderCachePath)
         }
         
         bottomSheetDialog.show()
