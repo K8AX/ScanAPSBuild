@@ -222,7 +222,7 @@ class GameAdapter(private val activity: AppCompatActivity, private val inflater:
         }
 
         bottomSheetView.findViewById<MaterialButton>(R.id.clear_shader_cache).setOnClickListener {
-            val CitraShaderCachePath = PermissionsHandler.citraDirectory + "/shaders/opengl/precompiled/conventional/" + holder.game.titleId.toString() + ".bin" 
+            val CitraShaderCachePath = PermissionsHandler.citraDirectory.toString() + "/shaders/opengl/precompiled/conventional/" + holder.game.titleId.toString() + ".bin" 
             FileUtil.deleteDocument(CitraShaderCachePath)
         }
         
