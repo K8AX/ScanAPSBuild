@@ -126,6 +126,8 @@
                 android:contentDescription="@string/cheats"
                 android:text="@string/cheats" />
 
+        </LinearLayout>
+
            <TextView
              android:id="@+id/manage_shader_cache"
              style="?attr/textAppearanceLabelLarge"
