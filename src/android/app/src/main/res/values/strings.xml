@@ -454,6 +454,8 @@
     <string name="delete_save">Delete save</string>
     <string name="import_save">Import</string>
     <string name="export_save">Export</string>
+    <string name="manage_shader_cache">Manage Shader Cache</string>
+    <string name="clear_shader_cache">Clear Shader Cache</string>
 
     <!-- Cheats -->
     <string name="cheats">Cheats</string>
