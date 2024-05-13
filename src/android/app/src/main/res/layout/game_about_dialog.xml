@@ -150,7 +150,7 @@
             app:layout_constraintTop_toBottomOf="@+id/manage_shader_cache">
 
           <com.google.android.material.button.MaterialButton
-              android:id="@+id/cheats"
+              android:id="@+id/clear_shader_cache"
               style="@style/Widget.Material3.Button.TonalButton.Icon"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
