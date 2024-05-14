@@ -121,7 +121,7 @@ object SettingsFile {
      */
     fun saveFile(
         fileName: String,
-        gameId: String,
+        gameId: String?,
         sections: TreeMap<String, SettingSection?>,
         view: SettingsActivityView
     ) {
@@ -155,7 +155,7 @@ object SettingsFile {
 
     fun saveFile(
         fileName: String,
-        gameId: String,
+        gameId: String?,
         setting: AbstractSetting
     ) {
         val ini = if (TextUtils.isEmpty(gameId)) {
