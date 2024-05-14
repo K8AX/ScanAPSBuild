@@ -125,10 +125,10 @@ object SettingsFile {
         sections: TreeMap<String, SettingSection?>,
         view: SettingsActivityView
     ) {
-        if (TextUtils.isEmpty(gameId)) {
-            val ini = getSettingsFile(fileName)
+        val ini = if (TextUtils.isEmpty(gameId)) {
+            getSettingsFile(fileName)
         } else {
-            val ini = getCustomGameSettingsFile(gameId)
+            getCustomGameSettingsFile(gameId)
         }
         try {
             val context: Context = CitraApplication.appContext
@@ -158,10 +158,10 @@ object SettingsFile {
         gameId: String,
         setting: AbstractSetting
     ) {
-        if (TextUtils.isEmpty(gameId)) {
-            val ini = getSettingsFile(fileName)
+        val ini = if (TextUtils.isEmpty(gameId)) {
+            getSettingsFile(fileName)
         } else {
-            val ini = getCustomGameSettingsFile(gameId)
+            getCustomGameSettingsFile(gameId)
         }
         try {
             val context: Context = CitraApplication.appContext
