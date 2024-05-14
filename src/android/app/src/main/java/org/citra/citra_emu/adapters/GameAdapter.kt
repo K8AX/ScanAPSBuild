@@ -209,7 +209,6 @@ class GameAdapter(private val activity: AppCompatActivity, private val inflater:
             SettingsActivity.launch(
                         context,
                         SettingsFile.FILE_NAME_CONFIG,
-                        "",
                         holder.game.titleId.toString()
                     )
         }
