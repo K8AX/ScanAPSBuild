@@ -91,6 +91,7 @@ class Settings {
             }
         } else {
             val fileName = "$gameId.ini"
+            val sectionNames = configFileSectionsMap[fileName] ?: emptyList()
             val iniSections = TreeMap<String, SettingSection?>()
             for (section in sectionNames) {
                 iniSections[section] = sections[section]
