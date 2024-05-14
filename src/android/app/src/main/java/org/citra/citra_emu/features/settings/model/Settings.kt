@@ -90,7 +90,12 @@ class Settings {
                 SettingsFile.saveFile(fileName, iniSections, view)
             }
         } else {
-            // TODO: Implement per game settings
+            val fileName = "$gameId.ini"
+            val iniSections = TreeMap<String, SettingSection?>()
+            for (section in sectionNames) {
+                iniSections[section] = sections[section]
+            }
+            SettingsFile.saveFile(fileName, iniSections, view)
         }
     }
 
