@@ -6,6 +6,7 @@ package org.citra.citra_emu.features.settings.utils
 
 import android.content.Context
 import android.net.Uri
+import android.text.TextUtils
 import androidx.documentfile.provider.DocumentFile
 import org.citra.citra_emu.CitraApplication
 import org.citra.citra_emu.R
