@@ -96,7 +96,7 @@ class Settings {
             for (section in sectionNames) {
                 iniSections[section] = sections[section]
             }
-            SettingsFile.saveFile(fileName, iniSections, view)
+            SettingsFile.saveFile(fileName, gameId, iniSections, view)
         }
     }
 
