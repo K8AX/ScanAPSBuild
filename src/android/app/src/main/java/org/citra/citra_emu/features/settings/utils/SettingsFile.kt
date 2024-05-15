@@ -121,7 +121,7 @@ object SettingsFile {
      */
     fun saveFile(
         fileName: String,
-        gameId: String?,
+        gameId: String,
         sections: TreeMap<String, SettingSection?>,
         view: SettingsActivityView
     ) {
@@ -155,7 +155,7 @@ object SettingsFile {
 
     fun saveFile(
         fileName: String,
-        gameId: String?,
+        gameId: String,
         setting: AbstractSetting
     ) {
         val ini = if (TextUtils.isEmpty(gameId)) {
@@ -200,7 +200,7 @@ object SettingsFile {
         return configDirectory!!.findFile("$fileName.ini")!!
     }
 
-    private fun getCustomGameSettingsFile(gameId: String?): DocumentFile {
+    private fun getCustomGameSettingsFile(gameId: String): DocumentFile {
         val root = DocumentFile.fromTreeUri(CitraApplication.appContext, Uri.parse(userDirectory))
         val configDirectory = root!!.findFile("GameSettings")
         return configDirectory!!.findFile("$gameId.ini")!!
