@@ -76,7 +76,7 @@ class Settings {
         loadSettings(view)
     }
 
-    fun saveSettings(view: SettingsActivityView, gameId: String?) {
+    fun saveSettings(view: SettingsActivityView, gameId: String) {
         if (TextUtils.isEmpty(gameId)) {
             view.showToastMessage(
                 CitraApplication.appContext.getString(R.string.ini_saved),
