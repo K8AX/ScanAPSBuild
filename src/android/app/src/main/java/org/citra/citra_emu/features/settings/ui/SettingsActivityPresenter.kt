@@ -54,7 +54,7 @@ class SettingsActivityPresenter(private val activityView: SettingsActivityView) 
     fun onStop(finishing: Boolean) {
         if (finishing && shouldSave) {
             Log.debug("[SettingsActivity] Settings activity stopping. Saving settings to INI...")
-            settings.saveSettings(activityView)
+            settings.saveSettings(activityView, gameId)
             SystemSaveGame.save()
         }
         NativeLibrary.reloadSettings()
