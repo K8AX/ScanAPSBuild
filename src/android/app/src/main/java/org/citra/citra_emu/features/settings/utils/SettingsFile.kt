@@ -155,7 +155,6 @@ object SettingsFile {
 
     fun saveFile(
         fileName: String,
-        gameId: String,
         setting: AbstractSetting
     ) {
         val ini = getSettingsFile(fileName)
