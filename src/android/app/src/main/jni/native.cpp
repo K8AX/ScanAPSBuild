@@ -345,18 +345,28 @@ void Java_org_citra_citra_1emu_NativeLibrary_swapScreens([[maybe_unused]] JNIEnv
     Camera::NDK::g_rotation = rotation;
 }
 
+static int stored_settings[6] = {-1, -1, -1, -1, -1, -1};
+static bool tweaks_set = false;
+
 jintArray Java_org_citra_citra_1emu_NativeLibrary_getTweaks(JNIEnv* env,
                                                             [[maybe_unused]] jobject obj) {
     int i = 0;
     int settings[6];
 
-    // get settings
-    settings[i++] = Settings::values.raise_cpu_ticks.GetValue();
-    settings[i++] = Settings::values.skip_slow_draw.GetValue();
-    settings[i++] = Settings::values.skip_texture_copy.GetValue();
-    settings[i++] = Settings::values.priority_boost.GetValue();
-    settings[i++] = Settings::values.enable_realtime_audio.GetValue();
-    settings[i++] = Settings::values.upscaling_hack.GetValue();
+    if (tweaks_set) {
+        // Use stored settings if available
+        for (i = 0; i < 6; ++i) {
+            settings[i] = stored_settings[i];
+        }
+    } else {
+        // Get current settings if not previously set
+        settings[i++] = Settings::values.raise_cpu_ticks.GetValue();
+        settings[i++] = Settings::values.skip_slow_draw.GetValue();
+        settings[i++] = Settings::values.skip_texture_copy.GetValue();
+        settings[i++] = Settings::values.priority_boost.GetValue();
+        settings[i++] = Settings::values.enable_realtime_audio.GetValue();
+        settings[i++] = Settings::values.upscaling_hack.GetValue();
+    }
 
     jintArray array = env->NewIntArray(i);
     env->SetIntArrayRegion(array, 0, i, settings);
@@ -370,21 +380,29 @@ void Java_org_citra_citra_1emu_NativeLibrary_setTweaks(JNIEnv* env, [[maybe_unus
 
     // Raise CPU Ticks
     Settings::values.raise_cpu_ticks.SetValue(settings[i++] > 0);
+    stored_settings[i++] = settings[i - 1];
 
     // Skip Slow Draw
     Settings::values.skip_slow_draw.SetValue(settings[i++] > 0);
+    stored_settings[i++] = settings[i - 1];
 
     // Skip Texture Copy
     Settings::values.skip_texture_copy.SetValue(settings[i++] > 0);
+    stored_settings[i++] = settings[i - 1];
 
     // Priority Boost
     Settings::values.priority_boost.SetValue(settings[i++] > 0);
+    stored_settings[i++] = settings[i - 1];
 
     // Real-time Audio
     Settings::values.enable_realtime_audio.SetValue(settings[i++] > 0);
+    stored_settings[i++] = settings[i - 1];
 
     // Upscaling Hack
     Settings::values.upscaling_hack.SetValue(settings[i++] > 0);
+    stored_settings[i++] = settings[i - 1];
+
+    tweaks_set = true;
 
     env->ReleaseIntArrayElements(array, settings, 0);
 }
