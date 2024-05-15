@@ -101,7 +101,7 @@ class Settings {
     }
 
     fun saveSetting(setting: AbstractSetting, filename: String) {
-        SettingsFile.saveFile(filename, gameId, setting)
+        SettingsFile.saveFile(filename, setting) // don't know actually where this fun is used.
     }
 
     companion object {
