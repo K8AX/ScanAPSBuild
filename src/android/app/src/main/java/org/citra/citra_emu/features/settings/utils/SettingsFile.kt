@@ -121,10 +121,15 @@ object SettingsFile {
      */
     fun saveFile(
         fileName: String,
+        gameId: String,
         sections: TreeMap<String, SettingSection?>,
         view: SettingsActivityView
     ) {
-        val ini = getSettingsFile(fileName)
+        val ini = if (TextUtils.isEmpty(gameId)) {
+            getSettingsFile(fileName)
+        } else {
+            getCustomGameSettingsFile(gameId)
+        }
         try {
             val context: Context = CitraApplication.appContext
             val inputStream = context.contentResolver.openInputStream(ini.uri)
@@ -153,11 +158,7 @@ object SettingsFile {
         gameId: String,
         setting: AbstractSetting
     ) {
-        val ini = if (TextUtils.isEmpty(gameId)) {
-            getSettingsFile(fileName)
-        } else {
-            getCustomGameSettingsFile(gameId)
-        }
+        val ini = getSettingsFile(fileName)
         try {
             val context: Context = CitraApplication.appContext
             val inputStream = context.contentResolver.openInputStream(ini.uri)
