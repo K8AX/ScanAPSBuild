@@ -102,6 +102,7 @@ class EmulationActivity : AppCompatActivity() {
         EmulationLifecycleUtil.addShutdownHook(hook = { this.finish() })
 
         isEmulationRunning = true
+        instance = this
     }
 
     // On some devices, the system bars will not disappear on first boot or after some
@@ -128,12 +129,6 @@ class EmulationActivity : AppCompatActivity() {
         isEmulationRunning = false
         super.onDestroy()
     }
-
-    companion object {
-        fun isRunning(): Boolean {
-            return isEmulationRunning
-        }
-     }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -479,6 +474,12 @@ class EmulationActivity : AppCompatActivity() {
         }
 
     companion object {
+        private var instance: EmulationActivity? = null
+
+        fun isRunning(): Boolean {
+            return instance?.isEmulationRunning == true
+        }
+        
         fun stopForegroundService(activity: Activity) {
             val startIntent = Intent(activity, ForegroundService::class.java)
             startIntent.action = ForegroundService.ACTION_STOP
