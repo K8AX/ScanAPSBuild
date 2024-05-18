@@ -129,7 +129,7 @@ class EmulationActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-    fun isEmulationRunning(): Boolean {
+    fun isRunning(): Boolean {
         return isEmulationRunning
     }
 
