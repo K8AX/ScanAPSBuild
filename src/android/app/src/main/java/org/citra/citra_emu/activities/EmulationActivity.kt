@@ -129,9 +129,11 @@ class EmulationActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-    fun isRunning(): Boolean {
-        return isEmulationRunning
-    }
+    companion object {
+        fun isRunning(): Boolean {
+            return isEmulationRunning
+        }
+     }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
