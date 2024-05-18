@@ -123,6 +123,16 @@ class EmulationActivity : AppCompatActivity() {
         NativeLibrary.reloadCameraDevices()
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean("isEmulationRunning", isEmulationRunning)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        isEmulationRunning = savedInstanceState.getBoolean("isEmulationRunning", false)
+    }
+
     override fun onDestroy() {
         EmulationLifecycleUtil.clear()
         stopForegroundService(this)
