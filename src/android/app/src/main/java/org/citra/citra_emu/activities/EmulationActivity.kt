@@ -127,6 +127,7 @@ class EmulationActivity : AppCompatActivity() {
         EmulationLifecycleUtil.clear()
         stopForegroundService(this)
         isEmulationRunning = false
+        instance = null
         super.onDestroy()
     }
 
@@ -477,7 +478,7 @@ class EmulationActivity : AppCompatActivity() {
         private var instance: EmulationActivity? = null
 
         fun isRunning(): Boolean {
-            return instance?.isEmulationRunning == true
+            return instance?.isEmulationRunning ?: false
         }
         
         fun stopForegroundService(activity: Activity) {
