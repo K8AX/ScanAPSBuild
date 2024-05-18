@@ -59,6 +59,8 @@ class EmulationActivity : AppCompatActivity() {
     private lateinit var screenAdjustmentUtil: ScreenAdjustmentUtil
     private lateinit var hotkeyUtility: HotkeyUtility
 
+    private var isEmulationRunning: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         ThemeUtil.setTheme(this)
 
@@ -98,6 +100,8 @@ class EmulationActivity : AppCompatActivity() {
         startForegroundService(foregroundService)
 
         EmulationLifecycleUtil.addShutdownHook(hook = { this.finish() })
+
+        isEmulationRunning = true
     }
 
     // On some devices, the system bars will not disappear on first boot or after some
@@ -121,7 +125,12 @@ class EmulationActivity : AppCompatActivity() {
     override fun onDestroy() {
         EmulationLifecycleUtil.clear()
         stopForegroundService(this)
+        isEmulationRunning = false
         super.onDestroy()
+    }
+
+    fun isEmulationRunning(): Boolean {
+        return isEmulationRunning
     }
 
     override fun onRequestPermissionsResult(
