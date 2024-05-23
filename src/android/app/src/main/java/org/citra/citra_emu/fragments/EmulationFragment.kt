@@ -445,6 +445,10 @@ class EmulationFragment : Fragment(), SurfaceHolder.Callback, Choreographer.Fram
 
         if (NativeLibrary.isRunning()) {
             binding.surfaceEmulation.setDimensions(aspectRatio.first, aspectRatio.second, activityOrientation)
+            val layoutParams = binding.surfaceEmulation.layoutParams
+            layoutParams.width = aspectRatio.first
+            layoutParams.height = aspectRatio.second
+            binding.surfaceEmulation.layoutParams = layoutParams
             emulationState.updateSurface()
         }
     }
