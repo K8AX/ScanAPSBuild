@@ -14,8 +14,8 @@
         <!-- This is what everything is rendered to during emulation -->
         <org.citra.citra_emu.view.SurfaceView
             android:id="@+id/surface_emulation"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:defaultFocusHighlightEnabled="false"
             android:focusable="false"
