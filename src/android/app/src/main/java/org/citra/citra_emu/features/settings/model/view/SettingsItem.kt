@@ -23,8 +23,11 @@ abstract class SettingsItem(
 
     val isEditable: Boolean
         get() {
-            if (!NativeLibrary.isRunning()) return true
-            return setting?.isRuntimeEditable ?: false
+            return if (!NativeLibrary.isRunning()) {
+                true
+            } else {
+                setting?.isRuntimeEditable ?: true
+            }
         }
 
     companion object {
