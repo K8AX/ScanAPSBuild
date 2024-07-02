@@ -148,6 +148,8 @@ public:
          */
         void SetClientVersion(Kernel::HLERequestContext& ctx);
 
+        void ScanAPs(Kernel::HLERequestContext& ctx);
+
     protected:
         std::shared_ptr<Module> ac;
     };
