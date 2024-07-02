@@ -192,6 +192,26 @@ void Module::Interface::SetClientVersion(Kernel::HLERequestContext& ctx) {
     rb.Push(ResultSuccess);
 }
 
+void Module::Interface::ScanAPs(Kernel::HLERequestContext& ctx) {
+    IPC::RequestParser rp(ctx);
+
+    // Simulate a list of available Wi-Fi access points (APs)
+    std::vector<std::string> available_aps = {"AP1", "AP2", "AP3"};
+    
+    // Create a buffer to hold the simulated AP names
+    std::vector<u8> buffer;
+    for (const auto& ap : available_aps) {
+        buffer.insert(buffer.end(), ap.begin(), ap.end());
+        buffer.push_back('\0'); // Null-terminate each AP name
+    }
+
+    IPC::RequestBuilder rb = rp.MakeBuilder(1, 2);
+    rb.Push(ResultSuccess);
+    rb.PushStaticBuffer(std::move(buffer), 0);
+
+    LOG_WARNING(Service_AC, "(STUBBED) ScanAPs called");
+}
+
 Module::Interface::Interface(std::shared_ptr<Module> ac, const char* name, u32 max_session)
     : ServiceFramework(name, max_session), ac(std::move(ac)) {}
 
