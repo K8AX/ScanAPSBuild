@@ -349,9 +349,8 @@ void Source::GenerateFrame() {
                                 current_frame, frame_position);
             break;
         case InterpolationMode::Polyphase:
-            // TODO(merry): Implement polyphase interpolation
-            AudioInterp::Linear(state.interp_state, state.current_buffer, state.rate_multiplier,
-                                current_frame, frame_position);
+            AudioInterp::Polyphase(state.interp_state, state.current_buffer, state.rate_multiplier,
+                               current_frame, frame_position);
             break;
         default:
             UNIMPLEMENTED();
