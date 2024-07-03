@@ -20,6 +20,8 @@ struct State {
     std::array<s16, 2> xn2 = {}; ///< x[n-2]
     /// Current fractional position.
     u64 fposition = 0;
+    /// Polyphase filter state (added for Polyphase interpolation)
+    std::vector<std::array<s16, 2>> polyphase_filter;
 };
 
 /**
@@ -45,5 +47,17 @@ void None(State& state, StereoBuffer16& input, float rate, StereoFrame16& output
  */
 void Linear(State& state, StereoBuffer16& input, float rate, StereoFrame16& output,
             std::size_t& outputi);
+
+/**
+ * Polyphase interpolation. This is equivalent to a higher-order interpolation using polyphase filtering.
+ * @param state Interpolation state.
+ * @param input Input buffer.
+ * @param rate Stretch factor. Must be a positive non-zero value.
+ *             rate > 1.0 performs decimation and rate < 1.0 performs upsampling.
+ * @param output The resampled audio buffer.
+ * @param outputi The index of output to start writing to.
+ */
+void Polyphase(State& state, StereoBuffer16& input, float rate, StereoFrame16& output,
+               std::size_t& outputi);
 
 } // namespace AudioCore::AudioInterp
