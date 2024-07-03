@@ -3,6 +3,7 @@
 // Refer to the license.txt file included.
 
 #include <algorithm>
+#include <cmath>
 #include "audio_core/interpolate.h"
 #include "common/assert.h"
 
@@ -12,6 +13,34 @@ namespace AudioCore::AudioInterp {
 // (This is not verified. This was chosen for minimal error.)
 constexpr u64 scale_factor = 1 << 24;
 constexpr u64 scale_mask = scale_factor - 1;
+
+constexpr std::size_t filter_taps = 16;  // Number of filter taps
+constexpr float pi = 3.14159265358979323846f;
+
+// Helper function to generate a sinc function
+static float sinc(float x) {
+    if (x == 0.0f) {
+        return 1.0f;
+    }
+    x *= pi;
+    return std::sin(x) / x;
+}
+
+// Helper function to create polyphase filter
+static void CreatePolyphaseFilter(State& state, float rate) {
+    std::size_t num_phases = static_cast<std::size_t>(std::ceil(rate));
+    state.polyphase_filter.resize(num_phases * filter_taps);
+
+    for (std::size_t phase = 0; phase < num_phases; ++phase) {
+        for (std::size_t tap = 0; tap < filter_taps; ++tap) {
+            float t = (tap - (filter_taps / 2) + (static_cast<float>(phase) / num_phases));
+            state.polyphase_filter[phase * filter_taps + tap] = {
+                static_cast<s16>(sinc(t) * 32767),  // Left channel
+                static_cast<s16>(sinc(t) * 32767)   // Right channel
+            };
+        }
+    }
+}
 
 /// Here we step over the input in steps of rate, until we consume all of the input.
 /// Three adjacent samples are passed to fn each step.
@@ -70,6 +99,26 @@ void Linear(State& state, StereoBuffer16& input, float rate, StereoFrame16& outp
                             static_cast<s16>(x0[0] + fraction * delta0 / scale_factor),
                             static_cast<s16>(x0[1] + fraction * delta1 / scale_factor),
                         };
+                    });
+}
+
+void Polyphase(State& state, StereoBuffer16& input, float rate, StereoFrame16& output,
+               std::size_t& outputi) {
+    if (state.polyphase_filter.empty()) {
+        CreatePolyphaseFilter(state, rate);
+    }
+
+    StepOverSamples(state, input, rate, output, outputi,
+                    [&state](u64 fraction, const auto& x0, const auto& x1, const auto& x2) {
+                        std::size_t phase = (fraction * state.polyphase_filter.size()) >> 24;
+                        std::array<s16, 2> result = {0, 0};
+
+                        for (std::size_t tap = 0; tap < filter_taps; ++tap) {
+                            result[0] += state.polyphase_filter[phase * filter_taps + tap][0] * x1[0] / 32767;
+                            result[1] += state.polyphase_filter[phase * filter_taps + tap][1] * x1[1] / 32767;
+                        }
+
+                        return result;
                     });
 }
 
