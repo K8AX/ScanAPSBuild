@@ -22,6 +22,8 @@ class Process;
 
 namespace Loader {
 
+extern bool isZipFormat;
+
 /// File types supported by CTR
 enum class FileType {
     Error,
@@ -32,7 +34,6 @@ enum class FileType {
     ELF,
     THREEDSX, // 3DSX
     ARTIC,
-    ZIP,
 };
 
 /**
