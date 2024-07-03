@@ -171,7 +171,7 @@ void Source::ParseConfig(SourceConfiguration::Configuration& config,
 
     // TODO(xperia64): Is this in the correct spot in terms of the bit handling order?
     if (config.partial_embedded_buffer_dirty) {
-        config.partial_embedded_buffer_dirty.Assign(0);
+    config.partial_embedded_buffer_dirty.Assign(0);
 
     // Get the physical memory pointer
     const u8* const memory =
@@ -188,10 +188,11 @@ void Source::ParseConfig(SourceConfiguration::Configuration& config,
             // state.current_buffer.insert(state.current_buffer.end(),
             //                             Codec::DecodePCM8(num_new_samples, memory, num_new_samples));
             break;
-        case Format::PCM16:
-            state.current_buffer.insert(state.current_buffer.end(),
-                                        Codec::DecodePCM16(num_new_samples, memory, num_new_samples));
+        case Format::PCM16: {
+            auto decoded_buffer = Codec::DecodePCM16(num_new_samples, memory, num_new_samples);
+            state.current_buffer.insert(state.current_buffer.end(), decoded_buffer.begin(), decoded_buffer.end());
             break;
+        }
         case Format::ADPCM:
             UNIMPLEMENTED_MSG("{} not handled for partial buffer updates", "ADPCM");
             // state.current_buffer.insert(state.current_buffer.end(),
@@ -214,7 +215,6 @@ void Source::ParseConfig(SourceConfiguration::Configuration& config,
               state.current_buffer_physical_address, static_cast<u32>(config.length),
               config.buffer_id);
     }
-
 
     if (config.embedded_buffer_dirty) {
         config.embedded_buffer_dirty.Assign(0);
@@ -303,7 +303,7 @@ void Source::GenerateFrame() {
     current_frame.fill({});
 
     if (state.current_buffer.empty()) {
-        // TODO(SachinV): Should dequeue happen at the end of the frame generation?
+        // TODO: Should dequeue happen at the end of the frame generation?
         if (DequeueBuffer()) {
             return;
         }
@@ -330,7 +330,7 @@ void Source::GenerateFrame() {
                                 current_frame, frame_position);
             break;
         case InterpolationMode::Polyphase:
-            // TODO(merry): Implement polyphase interpolation
+            // TODO: Implement polyphase interpolation
             AudioInterp::Linear(state.interp_state, state.current_buffer, state.rate_multiplier,
                                 current_frame, frame_position);
             break;
@@ -339,8 +339,7 @@ void Source::GenerateFrame() {
             break;
         }
     }
-    // TODO(jroweboy): Keep track of frame_position independently so that it doesn't lose precision
-    // over time
+    // TODO: Keep track of frame_position independently so that it doesn't lose precision over time
     state.current_sample_number += static_cast<u32>(frame_position * state.rate_multiplier);
 
     state.filters.ProcessFrame(current_frame);
