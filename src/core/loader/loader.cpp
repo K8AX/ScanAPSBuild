@@ -15,6 +15,8 @@
 
 namespace Loader {
 
+bool isZipFormat = false;
+
 FileType IdentifyFile(FileUtil::IOFile& file) {
     FileType type;
 
@@ -44,6 +46,10 @@ FileType IdentifyFile(const std::string& file_name) {
 
 FileType GuessFromExtension(const std::string& extension_) {
     std::string extension = Common::ToLower(extension_);
+
+    if (extension == ".zip") {
+        isZipFormat = true;
+    }
 
     if (extension == ".elf" || extension == ".axf")
         return FileType::ELF;
