@@ -18,6 +18,7 @@
 #include "core/hle/service/ac/ac_i.h"
 #include "core/hle/service/ac/ac_u.h"
 #include "core/hle/service/soc/soc_u.h"
+#include "core/hle/service/nwm/nwm_inf.h
 #include "core/memory.h"
 
 SERIALIZE_EXPORT_IMPL(Service::AC::Module)
@@ -195,22 +196,49 @@ void Module::Interface::SetClientVersion(Kernel::HLERequestContext& ctx) {
 void Module::Interface::ScanAPs(Kernel::HLERequestContext& ctx) {
     IPC::RequestParser rp(ctx);
 
-    // Simulate a list of available Wi-Fi access points (APs)
-    std::vector<std::string> available_aps = {"AP1", "AP2", "AP3"};
-    
-    // Create a buffer to hold the simulated AP names
+    // Call NWMINF::RecvBeaconBroadcastData and retrieve its output
+    std::vector<u8> recv_buffer;
+    if (!NWMINF::RecvBeaconBroadcastData(recv_buffer)) {
+        LOG_WARNING(Service_AC, "RecvBeaconBroadcastData failed");
+        IPC::RequestBuilder rb = rp.MakeBuilder(1, 2);
+        rb.Push(ResultFailure);
+        return;
+    }
+
+    // Parse the received buffer to extract AP information
+    std::vector<std::string> available_aps;
+    size_t pos = 0;
+    while (pos < recv_buffer.size()) {
+        std::string ap;
+        while (pos < recv_buffer.size() && recv_buffer[pos] != '\0') {
+            ap += recv_buffer[pos];
+            ++pos;
+        }
+        if (!ap.empty()) {
+            available_aps.push_back(ap);
+        }
+        ++pos; // Skip the null terminator
+    }
+
+    // Create a buffer to hold the AP names
     std::vector<u8> buffer;
     for (const auto& ap : available_aps) {
         buffer.insert(buffer.end(), ap.begin(), ap.end());
         buffer.push_back('\0'); // Null-terminate each AP name
     }
 
+    // Calculate the total size of the buffer
+    u32 buffer_size = static_cast<u32>(buffer.size());
+
+    // Prepare the response
     IPC::RequestBuilder rb = rp.MakeBuilder(1, 2);
     rb.Push(ResultSuccess);
-    rb.PushStaticBuffer(std::move(buffer), 0);
+    rb.PushStaticBuffer(std::move(buffer), buffer_size);
 
-    LOG_WARNING(Service_AC, "(STUBBED) ScanAPs called");
+    // Log the action for debugging purposes
+    LOG_WARNING(Service_AC, "ScanAPs called: Simulated APs = %zu, Buffer Size = %u", available_aps.size(), buffer_size);
 }
+
 
 Module::Interface::Interface(std::shared_ptr<Module> ac, const char* name, u32 max_session)
     : ServiceFramework(name, max_session), ac(std::move(ac)) {}
